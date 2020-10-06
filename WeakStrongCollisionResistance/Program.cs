@@ -32,11 +32,14 @@ namespace WeakStrongCollisionResistance
         // Then it does the same until it finds a string with the same first 24 bits of the hash.
         public void WeakCollision()
         {
+            
             // Create a log and start the timer
             List<string> log = new List<string>();
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            Console.WriteLine("Starting Weak Collision experiment. Full report will print after completion.");
+            log.Add("\nStrong Collision Report:\n");
             double accumulator = 0;
             int attempt_cnt = 0;
             do
@@ -56,10 +59,10 @@ namespace WeakStrongCollisionResistance
                     if (phrase_bytes_str == rand_str)
                     {
                         match_found = true;
-                        log.Add($" Phrase {phrase_bytes_str} with hash value {input_str} matched on {counter.ToString()} th try.\n"); // Log the results
+                        log.Add($" Phrase {input_str} with hash value {phrase_bytes_str} matched on {counter.ToString()} th try.\n"); // Log the results
                     }
                     counter++;
-                } while ((!match_found) && (counter < 35000000)); // Try up to 35 million random combinations. Move on if no match found.
+                } while ((!match_found) && (counter < 20000000)); // Try up to 20 million random combinations. Move on if no match found.
                 accumulator += counter;
 
                 attempt_cnt++;
@@ -68,6 +71,7 @@ namespace WeakStrongCollisionResistance
             string elapsed = sw.Elapsed.ToString();
             log.Add($"\nIt took average of {(accumulator / attempt_cnt).ToString()} trys to find a match\nElapsed time: {elapsed}");
             PrintLog(log);
+            Console.WriteLine("------------------------------------------------------------------------------------------------------");
         }
 
         // Attempts to match 24 bits of newll generated hash to existing values in a dictionary. 
@@ -77,7 +81,9 @@ namespace WeakStrongCollisionResistance
         {
             List<string> log = new List<string>();
             Dictionary<string, string> cipher_dict = new Dictionary<string, string>();
-            
+
+            Console.WriteLine("Starting Strong Collision experiment. Full report will print after completion.");
+            log.Add("\nStrong Collision Report:\n");
             int attempt_cnt = 0;
             double accumulator = 0;
             do
@@ -128,6 +134,7 @@ namespace WeakStrongCollisionResistance
 
             log.Add($"\n\nAverage number of attempts to find the first match was: {accumulator / attempt_cnt}");
             PrintLog(log);
+            Console.WriteLine("------------------------------------------------------------------------------------------------------------------");
         }
 
         // Builds a random string 5 to 20 chars long using all possible keyboard chars
